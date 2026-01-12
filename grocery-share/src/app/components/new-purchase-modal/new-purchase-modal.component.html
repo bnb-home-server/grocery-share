@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Purchase</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="modal-content">
+    <div class="form-section">
+      <label class="section-label">Establishment</label>
+      <ion-input
+        [(ngModel)]="establishment"
+        placeholder="Enter establishment name"
+        fill="outline"
+      ></ion-input>
+
+      <div class="recent-establishments" *ngIf="recentEstablishments.length > 0">
+        <label class="subsection-label">Recent</label>
+        <div class="chips-container">
+          <ion-button
+            *ngFor="let est of recentEstablishments"
+            fill="outline"
+            size="small"
+            (click)="selectEstablishment(est)"
+          >
+            {{ est }}
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="section-label">Select People</label>
+      <ion-list class="people-list">
+        <ion-item *ngFor="let person of allPeople" lines="none">
+          <ion-checkbox
+            slot="start"
+            [checked]="isPersonSelected(person.id!)"
+            (ionChange)="togglePerson(person.id!)"
+          ></ion-checkbox>
+          <ion-label>{{ person.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <ion-button
+      expand="block"
+      (click)="create()"
+      [disabled]="!establishment.trim() || selectedPeople.length === 0"
+      class="create-button"
+    >
+      Create Purchase
+    </ion-button>
+  </div>
+</ion-content>

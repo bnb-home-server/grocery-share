@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>People</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-wrapper">
+    <div class="header-section">
+      <h1>Manage People</h1>
+      <p *ngIf="people.length === 0 && !isAddingPerson" class="empty-message">
+        No people added yet. Add your first person!
+      </p>
+    </div>
+
+    <ion-list class="people-list">
+      <!-- Input para adicionar nova pessoa -->
+      <ion-item *ngIf="isAddingPerson" class="add-person-item">
+        <ion-input
+          name="newPersonName"
+          [(ngModel)]="newPersonName"
+          placeholder="Enter person name"
+          (keyup.enter)="savePerson()"
+          (keyup.escape)="cancelAddPerson()"
+        ></ion-input>
+        <ion-button slot="end" fill="clear" color="primary" (click)="savePerson()" [disabled]="!newPersonName.trim()">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" fill="clear" color="medium" (click)="cancelAddPerson()">
+          <ion-icon name="close-circle"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- Lista de pessoas existentes -->
+      <ion-item *ngFor="let person of people" class="person-item">
+        <ion-input
+          [value]="person.name"
+          (ionBlur)="updatePersonName(person, $event)"
+          placeholder="Person name"
+        ></ion-input>
+        <ion-button slot="end" fill="clear" color="danger" (click)="deletePerson(person)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isAddingPerson">
+    <ion-fab-button (click)="startAddingPerson()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

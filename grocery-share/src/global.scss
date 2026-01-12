@@ -25,13 +25,34 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+* {
+  box-sizing: border-box;
+}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+ion-content {
+  --background: var(--ion-background-color);
+}
+
+ion-card {
+  --background: var(--ion-card-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+body.dark ion-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+ion-button {
+  text-transform: none;
+  font-weight: 600;
+}
+
+ion-toolbar {
+  --background: var(--ion-background-color);
+  --border-color: var(--ion-color-light);
+}
+
+body.dark ion-toolbar {
+  --border-color: var(--ion-color-dark);
+}

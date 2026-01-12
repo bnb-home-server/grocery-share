@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Grocery Share</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToPeople()">
+        <ion-icon slot="icon-only" name="people"></ion-icon>
+      </ion-button>
+      <ion-button (click)="toggleTheme()">
+        <ion-icon slot="icon-only" [name]="theme.isDarkMode() ? 'sunny' : 'moon'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadData($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="content-wrapper">
+    <div class="header-section">
+      <h1>Recent Purchases</h1>
+      <p *ngIf="purchases.length === 0" class="empty-message">
+        No purchases yet. Create your first purchase!
+      </p>
+    </div>
+
+    <ion-list *ngIf="purchases.length > 0" class="purchases-list">
+      <ion-item-sliding *ngFor="let purchase of purchases">
+        <ion-card (click)="openPurchase(purchase)" class="purchase-card">
+          <ion-card-header>
+            <div class="card-header-content">
+              <ion-card-title>{{ purchase.establishment }}</ion-card-title>
+              <ion-badge [color]="purchase.is_completed ? 'success' : 'warning'">
+                {{ purchase.is_completed ? 'Completed' : 'In Progress' }}
+              </ion-badge>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="purchase-info">
+              <div class="info-item">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <span>{{ formatDate(purchase.created_at) }}</span>
+              </div>
+              <div class="info-item" *ngIf="purchase.people.length > 0">
+                <ion-icon name="person-outline"></ion-icon>
+                <span>{{ getPeopleNames(purchase.people) }}</span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="deletePurchase(purchase, $event)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openNewPurchaseModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

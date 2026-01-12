@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ purchase?.establishment || 'Purchase' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="completePurchase()" [disabled]="purchase?.is_completed === 1">
+        <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-wrapper" *ngIf="purchase">
+    <ion-card class="summary-card">
+      <ion-card-content>
+        <div class="summary-header">
+          <h2>Summary</h2>
+          <div class="total-amount">
+            <span class="label">Total</span>
+            <span class="value">{{ calculateTotal() | currency:'BRL' }}</span>
+          </div>
+        </div>
+
+        <div class="people-summary">
+          <div class="person-total" *ngFor="let person of people">
+            <span class="person-name">{{ person.name }}</span>
+            <span class="person-amount">{{ calculatePersonTotal(person.id!) | currency:'BRL' }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="items-section">
+      <h2>Items</h2>
+      <p *ngIf="items.length === 0 && !isAddingItem" class="empty-message">
+        No items yet. Add your first item!
+      </p>
+
+      <ion-list class="items-list">
+        <!-- Input para adicionar novo item -->
+        <ion-item *ngIf="isAddingItem" class="add-item-input">
+          <ion-input
+            name="newItemName"
+            [(ngModel)]="newItemName"
+            placeholder="Enter item name"
+            (keyup.enter)="saveItem()"
+            (keyup.escape)="cancelAddItem()"
+          ></ion-input>
+          <ion-button slot="end" fill="clear" color="primary" (click)="saveItem()" [disabled]="!newItemName.trim()">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" fill="clear" color="medium" (click)="cancelAddItem()">
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <!-- Lista de itens existentes -->
+        <ion-item *ngFor="let item of items" class="item-editable">
+          <div class="item-content">
+            <div class="item-header">
+              <ion-input
+                class="item-name-input"
+                [value]="item.product_name"
+                (ionBlur)="updateItemName(item, $event)"
+                placeholder="Item name"
+              ></ion-input>
+              <ion-chip [color]="item.is_divided ? 'primary' : 'secondary'" (click)="toggleItemType(item)">
+                <ion-icon [name]="item.is_divided ? 'people' : 'person-outline'"></ion-icon>
+                <ion-label>{{ getPersonName(item.person_id) }}</ion-label>
+              </ion-chip>
+            </div>
+            <div class="item-footer">
+              <div class="price-input-wrapper">
+                <ion-icon name="cash-outline"></ion-icon>
+                <ion-input
+                  type="number"
+                  [value]="item.price"
+                  (ionBlur)="updateItemPriceValue(item, $event)"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                ></ion-input>
+              </div>
+              <ion-button fill="clear" color="danger" (click)="deleteItem(item)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isAddingItem">
+    <ion-fab-button (click)="startAddingItem()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

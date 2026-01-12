@@ -1,0 +1,21 @@
+.modal-content {
+  padding: 16px;
+}
+
+.people-list {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 24px;
+
+  ion-item {
+    --background: var(--ion-card-background);
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+.confirm-button {
+  margin-top: 24px;
+}

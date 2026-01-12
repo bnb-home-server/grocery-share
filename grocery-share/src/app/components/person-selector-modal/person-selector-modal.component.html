@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Assign to Person</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="modal-content">
+    <ion-list class="people-list">
+      <ion-radio-group [(ngModel)]="selectedPerson">
+        <ion-item *ngFor="let person of people" lines="none">
+          <ion-label>{{ person.name }}</ion-label>
+          <ion-radio slot="start" [value]="person.id"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+
+    <ion-button
+      expand="block"
+      (click)="confirm()"
+      [disabled]="!selectedPerson"
+      class="confirm-button"
+    >
+      Confirm
+    </ion-button>
+  </div>
+</ion-content>

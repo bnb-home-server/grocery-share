@@ -1,0 +1,59 @@
+.modal-content {
+  padding: 16px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+
+  .section-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--ion-color-dark);
+  }
+
+  .subsection-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    color: var(--ion-color-medium);
+  }
+
+  ion-input {
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+}
+
+.recent-establishments {
+  .chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    ion-button {
+      margin: 0;
+      text-transform: none;
+    }
+  }
+}
+
+.people-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: var(--ion-card-background);
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+.create-button {
+  margin-top: 24px;
+}
