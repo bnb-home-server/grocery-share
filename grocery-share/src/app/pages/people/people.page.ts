@@ -54,9 +54,14 @@ export class PeoplePage implements OnInit {
 
   async loadPeople() {
     try {
-      this.people = await this.peopleService.getAllPeople();
+      const people = await this.peopleService.getAllPeople();
+      // Só atualiza se recebeu dados válidos
+      if (people !== null && people !== undefined) {
+        this.people = people;
+      }
     } catch (error) {
       console.error('Error loading people:', error);
+      // Não limpa a lista em caso de erro
     } finally {
       this.loading = false;
     }
@@ -97,20 +102,33 @@ export class PeoplePage implements OnInit {
   cancelAddPerson() {
     this.isAddingPerson = false;
     this.newPersonName = '';
+    // Não recarrega os dados, apenas fecha o formulário
   }
 
   async updatePersonName(person: Person, event: any) {
-    const newName = event.target.value.trim();
-    if (newName && newName !== person.name && person.id) {
+    const newName = event.target.value?.trim();
+
+    // Se não houver mudança no nome ou o campo estiver vazio, não faz nada
+    if (!newName || newName === person.name) {
+      // Restaura o valor original se estiver vazio
+      if (!newName && event.target) {
+        event.target.value = person.name;
+      }
+      return;
+    }
+
+    // Atualiza apenas se houver ID e o nome for diferente
+    if (person.id && newName !== person.name) {
       try {
         await this.peopleService.updatePerson(person.id, newName);
         person.name = newName;
       } catch (error) {
         console.error('Error updating person:', error);
-        event.target.value = person.name;
+        // Restaura o valor original em caso de erro
+        if (event.target) {
+          event.target.value = person.name;
+        }
       }
-    } else if (!newName) {
-      event.target.value = person.name;
     }
   }
 

@@ -77,10 +77,19 @@ export class PurchasesPage implements OnInit {
 
   async loadData(event?: any) {
     try {
-      this.allPeople = await this.peopleService.getAllPeople();
-      this.purchases = await this.purchasesService.getAllPurchases();
+      const people = await this.peopleService.getAllPeople();
+      const purchases = await this.purchasesService.getAllPurchases();
+
+      // Só atualiza se recebeu dados válidos
+      if (people !== null && people !== undefined) {
+        this.allPeople = people;
+      }
+      if (purchases !== null && purchases !== undefined) {
+        this.purchases = purchases;
+      }
     } catch (error) {
       console.error('Error loading purchases:', error);
+      // Não limpa as listas em caso de erro
     } finally {
       this.loading = false;
       if (event) {
